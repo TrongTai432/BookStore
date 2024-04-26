@@ -10,20 +10,19 @@ public class DBConnect {
     private static final String JDBC_PASSWORD = "123456";
 
     public static Connection getConnection() throws SQLException {
-        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return connection;
+        Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
+        return conn;
     }
 
-    public static void closeConnection(Connection connection) {
-        if (connection != null) {
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
             try {
-                connection.close();
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

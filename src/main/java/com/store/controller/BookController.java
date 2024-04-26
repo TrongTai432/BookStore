@@ -1,8 +1,7 @@
 package com.store.controller;
-
-import com.store.dao.BookDAO;
-import com.store.dao.BookDAOImpl;
 import com.store.dto.BookDTO;
+import com.store.service.BookService;
+import com.store.service.BookServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -11,14 +10,19 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "BookController", value = "/BookController")
+@WebServlet("/BookController")
 public class BookController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private BookDAOImpl book;
+    private BookService bookService;
 
     public void init() {
-        book = new BookDAOImpl("jdbc:mysql://localhost:3306/Bookstore", "root", "123456");
+        String jdbcURL = getServletContext().getInitParameter("dbURL");
+        String jdbcUsername = getServletContext().getInitParameter("dbUsername");
+        String jdbcPassword = getServletContext().getInitParameter("dbPassword");
+
+        this.bookService = new BookServiceImpl(jdbcURL, jdbcUsername, jdbcPassword);
+
     }
     public BookController(){
 
@@ -33,20 +37,20 @@ public class BookController extends HttpServlet {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("newBookForm.jsp");
                     dispatcher.forward(request, response);
                     break;
-                case "edit":
+                case "insert":
                     int bookID = Integer.parseInt(request.getParameter("BookID"));
                     String name = request.getParameter("Name");
                     int totalPage = Integer.parseInt(request.getParameter("TotalPage"));
                     String type = request.getParameter("Type");
                     int quantity = Integer.parseInt(request.getParameter("Quantity"));
                     BookDTO newBook = new BookDTO(bookID,name,totalPage,type,quantity);
-                    this.book.updateBook(newBook);
-                    response.sendRedirect("BookController");
+                    this.bookService.updateBook(newBook);
+                    response.sendRedirect("book");
                     break;
                 case "delete":
                     break;
-                case "insert":
-                    insertBook(request, response);
+                case "edit":
+                    this.showEditForm(request, response);
                     break;
                 case "update":
                     this.updateBook(request, response);
@@ -65,8 +69,8 @@ public class BookController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void getListBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-        List<BookDTO> listBook = this.book.getAllBooks();
+    public void getListBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+        List<BookDTO> listBook = this.bookService.getAllBooks();
         request.setAttribute("listBook", listBook);
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookList.jsp");
         dispatcher.forward(request, response);
@@ -80,14 +84,14 @@ public class BookController extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("Quantity"));
 
         BookDTO newBook = new BookDTO(bookID,name,totalPage,type,quantity);
-        book.addNewBook(newBook);
+        bookService.addNewBook(newBook);
         response.sendRedirect("book");
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int bookid = Integer.parseInt(request.getParameter("bookID"));
-        BookDTO existingBook = this.book.getBookById(bookid);
+        BookDTO existingBook = this.bookService.getBookById(bookid);
         RequestDispatcher dispatcher = request.getRequestDispatcher("newBookForm.jsp");
         request.setAttribute("book", existingBook);
         dispatcher.forward(request, response);
@@ -101,7 +105,7 @@ public class BookController extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("Quantity"));
 
         BookDTO newBook = new BookDTO(bookID,name,totalPage,type,quantity);
-        this.book.updateBook(newBook);
-        response.sendRedirect("BookController");
+        this.bookService.updateBook(newBook);
+        response.sendRedirect("book");
     }
 }

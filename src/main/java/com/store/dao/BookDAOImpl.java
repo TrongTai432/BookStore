@@ -1,4 +1,5 @@
 package com.store.dao;
+import com.store.common.DBConnect;
 import  com.store.dao.BookDAO;
 import com.store.dto.BookDTO;
 
@@ -20,15 +21,7 @@ public class BookDAOImpl implements BookDAO {
     }
 
     protected void connect() throws SQLException {
-        if (jdbcConnection == null || jdbcConnection.isClosed()) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                throw new SQLException(e);
-            }
-            jdbcConnection = DriverManager.getConnection(
-                    jdbcURL, jdbcUsername, jdbcPassword);
-        }
+        DBConnect.getConnection();
     }
 
     protected void disconnect() throws SQLException {

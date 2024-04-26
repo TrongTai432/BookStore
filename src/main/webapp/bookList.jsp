@@ -1,19 +1,20 @@
 <%@ page import="com.store.common.DBConnect" %>
 <%@ page import="java.sql.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.store.controller.BookController" %>
 <html>
 <head>
     <title>Title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <%@ include file="header.jsp" %>
 </head>
 <body>
-<%@ include file="header.jsp" %>
-
+<div>
     <h2>List of Books</h2>
     <div class="tab-content mt-3">
-        <div id="books" class="tab-pane fade show active">
+        <div id="form-container">
             <table class="table">
                 <thead>
                 <tr>
@@ -26,34 +27,23 @@
                     <th><button class="btn"><a href="BookController?action=new">Add New Book</a></button></th>
                 </tr>
                 </thead>
-                <tbody>
-                <%
-                try {
-                Connection conn = DBConnect.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM books");
-                while (rs.next()) {
-                %>
-                 <tr>
-                <td><%= rs.getInt("BookID") %></td>
-                <td><%= rs.getString("Name") %></td>
-                <td><%= rs.getInt("TotalPage") %></td>
-                <td><%= rs.getString("Type") %></td>
-                <td><%= rs.getInt("Quantity") %></td>
-                </tr>
-                <%
-                    }
-                rs.close();
-                stmt.close();
-                DBConnect.closeConnection(conn);
-                } catch (SQLException e) {
-                e.printStackTrace();
-                }
-                %>
-                </tbody>
+                <c:forEach var="book" items="${listBook}">
+                    <tr>
+                        <td><c:out value="${book.BookID}" /></td>
+                        <td><c:out value="${book.Name}" /></td>
+                        <td><c:out value="${book.TotalPage}" /></td>
+                        <td><c:out value="${book.Type}" /></td>
+                        <td><c:out value="${book.Quantity}" /></td>
+                        <td>
+                            <a href="BookController?action=edit&id=<c:out value='${book.bookID}' />">Edit</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="BookController?action=delete&id=<c:out value='${book.bookID}' />">Delete</a>
+                        </td>
+                    </tr>
+                </c:forEach>
             </table>
         </div>
     </div>
-
+    </div>
 </body>
 </html>
