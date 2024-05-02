@@ -1,8 +1,6 @@
 package com.store.controller;
 
 import com.store.dto.StudentDTO;
-import com.store.service.BookService;
-import com.store.service.BookServiceImpl;
 import com.store.service.StudentService;
 import com.store.service.StudentServiceImpl;
 
@@ -47,6 +45,9 @@ public class StudentController extends HttpServlet {
                     response.sendRedirect("student");
                     break;
                 case "delete":
+                    int studentID = Integer.parseInt(request.getParameter("studentID"));
+                    studentService.deleteStudent(studentID);
+                    response.sendRedirect("student");
                     break;
                 case "edit":
                     this.showEditForm(request, response);

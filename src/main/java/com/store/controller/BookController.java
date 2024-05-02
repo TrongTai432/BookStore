@@ -2,7 +2,6 @@ package com.store.controller;
 import com.store.dto.BookDTO;
 import com.store.service.BookService;
 import com.store.service.BookServiceImpl;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -40,7 +39,9 @@ public class BookController extends HttpServlet {
                     this.insertBook(request,response);
                     break;
                 case "delete":
-
+                    int bookID = Integer.parseInt(request.getParameter("bookID"));
+                    bookService.deleteBook(bookID);
+                    response.sendRedirect("book");
                     break;
                 case "edit":
                     this.showEditForm(request, response);

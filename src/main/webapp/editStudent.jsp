@@ -24,11 +24,10 @@
             <input type="number" class="form-control" id="age" name="age" value="<%= request.getParameter("age") %>">
         </div>
         <div class="form-group">
-            <select>
-            <option value="male" ${student.gender == 'male' ? 'selected' : ''}>Male</option>
-            <option value="female" ${student.gender == 'female' ? 'selected' : ''}>Female</option>
-            </select>
+            <label for="gender">Gender:</label>
+            <input type="text" class="form-control" id="gender" name="gender" value="<%= (request.getParameter("gender").equals("true")) ? "Male" : "Female" %>" readonly>
         </div>
+
 
         <button type="submit" class="btn btn-primary">Edit</button>
     </form>

@@ -4,10 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/WEB-INF/css/base.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <%@ include file="header.jsp" %>
-
+    <script>
+        $(document).ready(function() {
+            $("#studentlist").validate({
+                onfocusout: false,
+                onkeyup: false,
+                rules: {
+                    "Name": {
+                        required: true
+                    },
+                    "Age": {
+                        required: true,
+                        min: 1
+                    }
+                },
+                messages: {
+                    "Name": {
+                        required: "*Name is required"
+                    },
+                    "Age": {
+                        required: "*Age is required",
+                        min: "Please enter at least 1 number"
+                    }
+                }
+            });
+        });
+    </script>
     <title>New Student Form</title>
 </head>
 <body>

@@ -31,8 +31,8 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public boolean deleteBook(BookDTO book) throws SQLException {
-        return this.bookDAO.deleteBook(book);
+    public boolean deleteBook(int bookID) throws SQLException {
+        return this.bookDAO.deleteBook(bookID);
     }
 
     @Override

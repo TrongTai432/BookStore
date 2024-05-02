@@ -84,16 +84,29 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public boolean deleteStudent(StudentDTO student) throws SQLException {
-        String sql = "DELETE FROM students where StudentID = ?";
-        Connection conn = DBConnect.getConnection();
-        PreparedStatement statement =  conn.prepareStatement(sql);
-        statement.setInt(1, student.getStudentID());
-        boolean rowDeleted = statement.executeUpdate() > 0;
-        statement.close();
-        disconnect();
+    public boolean deleteStudent(int studentID) throws SQLException {
+        String sql = "DELETE FROM students WHERE StudentID = ?";
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean rowDeleted = false;
+
+        try {
+            conn = DBConnect.getConnection();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, studentID);
+            rowDeleted = statement.executeUpdate() > 0;
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
         return rowDeleted;
     }
+
 
     @Override
     public StudentDTO getStudentById(int studentid) throws SQLException {

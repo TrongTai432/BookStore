@@ -84,16 +84,29 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public boolean deleteBook(BookDTO book) throws SQLException {
+    public boolean deleteBook(int bookID) throws SQLException {
         String sql = "DELETE FROM books where BookID = ?";
-        Connection conn = DBConnect.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setInt(1, book.getBookID());
-        boolean rowDeleted = statement.executeUpdate() > 0;
-        statement.close();
-        disconnect();
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean rowDeleted = false;
+
+        try {
+            conn = DBConnect.getConnection();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, bookID);
+            rowDeleted = statement.executeUpdate() > 0;
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
         return rowDeleted;
     }
+
 
     @Override
     public BookDTO getBookById(int bookID) throws SQLException {

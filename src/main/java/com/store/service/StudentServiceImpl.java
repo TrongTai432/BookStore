@@ -1,10 +1,8 @@
 package com.store.service;
 
-
 import com.store.dao.StudentDAO;
 import com.store.dao.StudentDAOImpl;
 import com.store.dto.StudentDTO;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,8 +29,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean deleteStudent(StudentDTO student) throws SQLException {
-        return this.studentDAO.deleteStudent(student);
+    public boolean deleteStudent(int studentID) throws SQLException {
+        return this.studentDAO.deleteStudent(studentID);
     }
 
     @Override

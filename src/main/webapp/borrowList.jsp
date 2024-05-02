@@ -22,7 +22,7 @@
                     <th>Quantity</th>
                     <th>BorrowDate</th>
                     <th>Actions</th>
-                    <th><button class="btn"><a href="BorrowController?action=new">Add New Borrow</a></button></th>
+                    <th><button class="btn"><a href="borrow?action=new">Add New Borrow</a></button></th>
                 </tr>
                 </thead>
                 <c:forEach var="borrow" items="${listBorrow}">
@@ -33,9 +33,9 @@
                         <td><c:out value="${borrow.quantity}" /></td>
                         <td><c:out value="${borrow.borrowDate}" /></td>
                         <td>
-                            <a href="BorrowController?action=edit&id=<c:out value='${borrow.borrowID}' />">Edit</a>
+                            <a href="borrow?action=edit&id=<c:out value='${borrow.borrowID}' />">Edit</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="BorrowController?action=delete&id=<c:out value='${borrow.borrowID}' />">Delete</a>
+                            <a href="borrow?action=delete&id=<c:out value='${borrow.borrowID}' />">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
