@@ -11,7 +11,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/base.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').click(function() {
+                var bookID = $(this).attr('data-id');
+                var deleteUrl = 'book?action=delete&bookID=' + bookID;
+                $('#deleteLink').attr('href', deleteUrl);
+            });
+        });
+
+    </script>
     <%@ include file="header.jsp" %>
 </head>
 <body>
@@ -42,7 +51,7 @@
                             <a href="book?action=edit&bookID=${book.bookID}&name=${book.name}&totalPage=${book.totalPage}&type=${book.type}&quantity=${book.quantity}">
                                 Edit
                             </a>
-                            <a href="book?action=delete&bookID=<c:out value='${book.bookID}' />" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
+                            <a href="#" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

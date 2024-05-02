@@ -1,13 +1,14 @@
 
-    $(document).ready(function() {
-    $('.delete-btn').on('click', function() {
-        var bookID = $(this).data('bookID'); //GET bookid
-        var link = 'book?action=delete&bookID=' + bookID;
-        $('#deleteLink').attr('href', link);
+$(document).ready(function() {
+    $('.delete-btn').click(function() {
+        var bookID = $(this).attr('data-id');
+        var deleteUrl = 'book?action=delete&bookID=' + bookID;
+        $('#deleteLink').attr('href', deleteUrl);
     });
 });
 
-    $(document).ready(function() {
+
+$(document).ready(function() {
         $("#studentlist").validate({
             onfocusout: false,
             onkeyup: false,
