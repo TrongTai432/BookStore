@@ -79,9 +79,9 @@ public class StudentController extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int studentid = Integer.parseInt(request.getParameter("studentID"));
-        StudentDTO existingStudent = this.studentService.getStudentById(studentid);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("newStudentForm.jsp");
+        int studentID = Integer.parseInt(request.getParameter("studentID"));
+        StudentDTO existingStudent = this.studentService.getStudentById(studentID);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("editStudent.jsp");
         request.setAttribute("student", existingStudent);
         dispatcher.forward(request, response);
 
@@ -89,10 +89,10 @@ public class StudentController extends HttpServlet {
 
 
     private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int studentID = Integer.parseInt(request.getParameter("StudentID"));
-        String name = request.getParameter("Name");
-        int age = Integer.parseInt(request.getParameter("Age"));
-        boolean gender = Boolean.parseBoolean(request.getParameter("Gender"));
+        int studentID = Integer.parseInt(request.getParameter("studentID"));
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         StudentDTO newStudent = new StudentDTO(studentID,name,age,gender);
         this.studentService.updateStudent(newStudent);
         response.sendRedirect("student");

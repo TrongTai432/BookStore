@@ -39,8 +39,10 @@
                         <td><c:out value="${book.type}" /></td>
                         <td><c:out value="${book.quantity}" /></td>
                         <td>
-                            <a href="book?action=edit&bookID=<c:out value='${book.bookID}' />">Edit</a>
-                            <a href="#" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
+                            <a href="book?action=edit&bookID=${book.bookID}&name=${book.name}&totalPage=${book.totalPage}&type=${book.type}&quantity=${book.quantity}">
+                                Edit
+                            </a>
+                            <a href="book?action=delete&bookID=<c:out value='${book.bookID}' />" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

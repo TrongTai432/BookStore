@@ -96,12 +96,12 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public BookDTO getBookById(int bookid) throws SQLException {
+    public BookDTO getBookById(int bookID) throws SQLException {
         BookDTO book= null;
         String sql = "SELECT * FROM books WHERE BookID = ?";
         Connection conn = DBConnect.getConnection();
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setInt(1, bookid);
+        statement.setInt(1, bookID);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             String name = resultSet.getString("Name");
@@ -109,7 +109,7 @@ public class BookDAOImpl implements BookDAO {
             String type = resultSet.getString("Type");
             int quantity = resultSet.getInt("Quantity");
 
-            book = new BookDTO(bookid, name, totalPage, type, quantity);
+            book = new BookDTO(bookID, name, totalPage, type, quantity);
         }
         resultSet.close();
         statement.close();

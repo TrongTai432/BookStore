@@ -36,7 +36,7 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public BookDTO getBookById(int bookid) throws SQLException {
-        return this.bookDAO.getBookById(bookid);
+    public BookDTO getBookById(int bookID) throws SQLException {
+        return this.bookDAO.getBookById(bookID);
     }
 }

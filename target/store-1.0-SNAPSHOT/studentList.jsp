@@ -41,7 +41,7 @@
                         </td>
 
                         <td>
-                            <a href="student?action=edit&id=<c:out value='${student.studentID}' />">Edit</a>
+                            <a href="student?action=edit&studentID=${student.studentID}&name=${student.name}&age=${student.age}&gender=${student.gender}">Edit</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="student?action=delete&id=<c:out value='${student.studentID}' />">Delete</a>
                         </td>

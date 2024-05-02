@@ -40,6 +40,7 @@ public class BookController extends HttpServlet {
                     this.insertBook(request,response);
                     break;
                 case "delete":
+
                     break;
                 case "edit":
                     this.showEditForm(request, response);
@@ -79,7 +80,7 @@ public class BookController extends HttpServlet {
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        int bookID = Integer.parseInt(request.getParameter("BookID"));
+        int bookID = Integer.parseInt(request.getParameter("bookID"));
         BookDTO existingBook = this.bookService.getBookById(bookID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("editBook.jsp");
         request.setAttribute("book", existingBook);
@@ -98,4 +99,9 @@ public class BookController extends HttpServlet {
         this.bookService.updateBook(newBook);
         response.sendRedirect("book");
     }
+
+
+
+
+
 }

@@ -10,26 +10,26 @@
 <body>
 <div class="container mt-4">
     <h1>Edit Book</h1>
-    <form action="book?action=edit" method="post" >
+    <form action="book?action=update" method="post" >
         <div class="form-group">
             <label for="bookID">Book ID:</label>
-            <input type="number" class="form-control" id="bookID" name="BookID" value="<%= request.getParameter("BookID") %>" required readonly>
+            <input type="number" class="form-control" id="bookID" name="BookID" value="<%= request.getParameter("bookID") %>" required readonly>
         </div>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="Name" value="<%= request.getParameter("Name") %>" required>
+            <input type="text" class="form-control" id="name" name="Name" value="<%= request.getParameter("name") %>" required>
         </div>
         <div class="form-group">
             <label for="totalPage">Total Page:</label>
-            <input type="number" class="form-control" id="totalPage" name="TotalPage" value="<%= request.getParameter("TotalPage") %>" >
+            <input type="number" class="form-control" id="totalPage" name="TotalPage" value="<%= request.getParameter("totalPage") %>" >
         </div>
         <div class="form-group">
             <label for="type">Type:</label>
-            <input type="text" class="form-control" id="type" name="Type" value="<%= request.getParameter("Type") %>" >
+            <input type="text" class="form-control" id="type" name="Type" value="<%= request.getParameter("type") %>" >
         </div>
         <div class="form-group">
             <label for="quantity">Quantity:</label>
-            <input type="number" class="form-control" id="quantity" name="Quantity" value="<%= request.getParameter("Quantity") %>" required>
+            <input type="number" class="form-control" id="quantity" name="Quantity" value="<%= request.getParameter("quantity") %>" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Edit</button>

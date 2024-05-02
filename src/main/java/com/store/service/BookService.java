@@ -10,5 +10,6 @@ public interface BookService {
     boolean addNewBook(BookDTO newBook) throws SQLException;
     boolean updateBook(BookDTO book) throws SQLException;
     boolean deleteBook(BookDTO book)throws SQLException;
-    BookDTO getBookById(int bookid) throws SQLException;
+    BookDTO getBookById(int bookID) throws SQLException;
+
 }

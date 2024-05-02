@@ -1,8 +1,8 @@
 
     $(document).ready(function() {
     $('.delete-btn').on('click', function() {
-        var bookID = $(this).data('id'); //GET bookid
-        var link = 'book?action=delete&id=' + bookID;
+        var bookID = $(this).data('bookID'); //GET bookid
+        var link = 'book?action=delete&bookID=' + bookID;
         $('#deleteLink').attr('href', link);
     });
 });
