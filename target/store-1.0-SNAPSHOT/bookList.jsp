@@ -1,13 +1,17 @@
-<%@ page import="com.store.common.DBConnect" %>
-<%@ page import="java.sql.*" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.store.controller.BookController" %>
 <html>
 <head>
     <title>Title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/base.js"></script>
     <%@ include file="header.jsp" %>
 </head>
 <body>
@@ -24,20 +28,19 @@
                     <th>Type</th>
                     <th>Quantity</th>
                     <th>Actions</th>
-                    <th><button class="btn"><a href="BookController?action=new">Add New Book</a></button></th>
+                    <th><button class="btn"><a href="book?action=new">Add New Book</a></button></th>
                 </tr>
                 </thead>
                 <c:forEach var="book" items="${listBook}">
                     <tr>
-                        <td><c:out value="${book.BookID}" /></td>
-                        <td><c:out value="${book.Name}" /></td>
-                        <td><c:out value="${book.TotalPage}" /></td>
-                        <td><c:out value="${book.Type}" /></td>
-                        <td><c:out value="${book.Quantity}" /></td>
+                        <td><c:out value="${book.bookID}" /></td>
+                        <td><c:out value="${book.name}" /></td>
+                        <td><c:out value="${book.totalPage}" /></td>
+                        <td><c:out value="${book.type}" /></td>
+                        <td><c:out value="${book.quantity}" /></td>
                         <td>
-                            <a href="BookController?action=edit&id=<c:out value='${book.bookID}' />">Edit</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="BookController?action=delete&id=<c:out value='${book.bookID}' />">Delete</a>
+                            <a href="book?action=edit&bookID=<c:out value='${book.bookID}' />">Edit</a>
+                            <a href="#" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -45,5 +48,26 @@
         </div>
     </div>
     </div>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this book?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-danger" id="deleteLink">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

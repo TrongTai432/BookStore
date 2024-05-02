@@ -15,6 +15,11 @@ public class StudentDTO {
         Age = age;
         Gender = gender;
     }
+    public StudentDTO( String name, int age, boolean gender) {
+        Name = name;
+        Age = age;
+        Gender = gender;
+    }
 
     public int getStudentID() {
         return StudentID;

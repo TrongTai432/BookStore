@@ -1,8 +1,6 @@
 package com.store.common;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBConnect {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/Bookstore";
@@ -26,6 +24,18 @@ public class DBConnect {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static ResultSet getData() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bookstore", "root", "123456");
+            PreparedStatement stmt = conn.prepareStatement("SELECT  books.BookID,students.Name AS StudentName ,borrows.BorrowDate, students.StudentID,books.Name AS BookName, borrows.Quantity FROM borrows INNER JOIN students ON borrows.StudentID = students.StudentID INNER JOIN books ON borrows.BookID = books.BookID");
+            return stmt.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

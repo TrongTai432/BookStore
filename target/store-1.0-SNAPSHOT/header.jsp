@@ -23,7 +23,7 @@
             <a class="nav-link" href="borrow">Borrows</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="search">Search Borrows</a>
+            <a class="nav-link" href="search.jsp">Search Borrows</a>
         </li>
     </ul>
 </div>

@@ -18,6 +18,13 @@ public class BookDTO {
         Quantity = quantity;
     }
 
+    public BookDTO(String name, int totalPage, String type, int quantity) {
+        Name = name;
+        TotalPage = totalPage;
+        Type = type;
+        Quantity = quantity;
+    }
+
     public int getBookID() {
         return BookID;
     }
