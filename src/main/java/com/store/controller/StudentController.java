@@ -46,8 +46,23 @@ public class StudentController extends HttpServlet {
                     break;
                 case "delete":
                     int studentID = Integer.parseInt(request.getParameter("studentID"));
-                    studentService.deleteStudent(studentID);
-                    response.sendRedirect("student");
+                    try {
+                        if (studentService.isStudentBorrowed(studentID)) {
+                            response.sendRedirect("student?action=error");
+                        } else {
+                            if (studentService.deleteStudent(studentID)) {
+                                response.sendRedirect("student");
+                            } else {
+
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "error":
+                    RequestDispatcher dispatcher1 = request.getRequestDispatcher("studentBorrowedError.jsp");
+                    dispatcher1.forward(request, response);
                     break;
                 case "edit":
                     this.showEditForm(request, response);

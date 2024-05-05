@@ -85,26 +85,45 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean deleteBook(int bookID) throws SQLException {
-        String sql = "DELETE FROM books where BookID = ?";
-        Connection conn = null;
-        PreparedStatement statement = null;
-        boolean rowDeleted = false;
-
-        try {
-            conn = DBConnect.getConnection();
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, bookID);
-            rowDeleted = statement.executeUpdate() > 0;
-        } finally {
-            if (statement != null) {
-                statement.close();
+        if (isBookBorrowed(bookID)) {
+            return false;
+        } else {
+            String sql = "DELETE FROM books where BookID = ?";
+            Connection conn = null;
+            PreparedStatement statement = null;
+            boolean rowDeleted = false;
+            try {
+                conn = DBConnect.getConnection();
+                statement = conn.prepareStatement(sql);
+                statement.setInt(1, bookID);
+                rowDeleted = statement.executeUpdate() > 0;
+            } finally {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
             }
-            if (conn != null) {
-                conn.close();
-            }
+            return rowDeleted;
         }
+    }
 
-        return rowDeleted;
+    public boolean isBookBorrowed(int bookID) throws SQLException {
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM borrows WHERE BookID = ?")) {
+            statement.setInt(1, bookID);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return false;
     }
 
 

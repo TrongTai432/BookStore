@@ -21,6 +21,11 @@ public class StudentDTO {
         Gender = gender;
     }
 
+    public StudentDTO(int studentID, String name) {
+        StudentID = studentID;
+        Name = name;
+    }
+
     public int getStudentID() {
         return StudentID;
     }

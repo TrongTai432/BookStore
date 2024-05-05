@@ -20,6 +20,13 @@ public class BorrowDTO {
         BorrowDate = borrowDate;
     }
 
+    public BorrowDTO(int studentID, int bookID, int quantity, Date borrowDate) {
+        StudentID = studentID;
+        BookID = bookID;
+        Quantity = quantity;
+        BorrowDate = borrowDate;
+    }
+
     public int getBorrowID() {
         return BorrowID;
     }

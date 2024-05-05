@@ -29,8 +29,8 @@ public class BorrowServiceImpl implements  BorrowService {
     }
 
     @Override
-    public boolean deleteBorrow(BorrowDTO borrow) throws SQLException {
-        return this.borrowDAO.deleteBorrow(borrow);
+    public boolean deleteBorrow(int borrowID) throws SQLException {
+        return this.borrowDAO.deleteBorrow(borrowID);
     }
 
     @Override

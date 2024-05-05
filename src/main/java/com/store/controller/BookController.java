@@ -40,8 +40,23 @@ public class BookController extends HttpServlet {
                     break;
                 case "delete":
                     int bookID = Integer.parseInt(request.getParameter("bookID"));
-                    bookService.deleteBook(bookID);
-                    response.sendRedirect("book");
+                    try {
+                        if (bookService.isBookBorrowed(bookID)) {
+                            response.sendRedirect("book?action=error");
+                        } else {
+                            if (bookService.deleteBook(bookID)) {
+                                response.sendRedirect("book");
+                            } else {
+
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "error":
+                    RequestDispatcher dispatcher1 = request.getRequestDispatcher("bookBorrowedError.jsp");
+                    dispatcher1.forward(request, response);
                     break;
                 case "edit":
                     this.showEditForm(request, response);

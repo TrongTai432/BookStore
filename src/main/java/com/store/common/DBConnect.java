@@ -1,5 +1,7 @@
 package com.store.common;
 
+import com.store.dto.StudentDTO;
+
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +15,6 @@ public class DBConnect {
     private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "123456";
 
-    // Hàm để lấy danh sách BookID từ CSDL
     public static List<Integer> getBookIDs() {
         List<Integer> bookIDs = new ArrayList<>();
         Connection conn = null;
@@ -33,7 +34,6 @@ public class DBConnect {
         return bookIDs;
     }
 
-    // Hàm để lấy danh sách StudentID từ CSDL
     public static List<Integer> getStudentIDs() {
         List<Integer> studentIDs = new ArrayList<>();
         Connection conn = null;
@@ -52,6 +52,22 @@ public class DBConnect {
         }
         return studentIDs;
     }
+
+    public static List<StudentDTO> getStudents() throws SQLException {
+        List<StudentDTO> students = new ArrayList<>();
+        String sql = "SELECT StudentID, StudentName FROM students";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("StudentID");
+                String name = rs.getString("StudentName");
+                students.add(new StudentDTO(id, name));  // Student is a custom class you need to define
+            }
+        }
+        return students;
+    }
+
 
     public static Connection getConnection() throws SQLException {
         try {

@@ -5,12 +5,14 @@
     <title>Title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/base.css">
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.min.css">
     <script>
         $(document).ready(function() {
             $('.delete-btn').click(function() {
@@ -19,7 +21,6 @@
                 $('#deleteLink').attr('href', deleteUrl);
             });
         });
-
     </script>
     <%@ include file="header.jsp" %>
 </head>
@@ -37,7 +38,7 @@
                     <th>Type</th>
                     <th>Quantity</th>
                     <th>Actions</th>
-                    <th><button class="btn"><a href="book?action=new">Add New Book</a></button></th>
+                    <th><button class="btn" ><a href="book?action=new">Add New Book</a></button></th>
                 </tr>
                 </thead>
                 <c:forEach var="book" items="${listBook}">
@@ -48,11 +49,14 @@
                         <td><c:out value="${book.type}" /></td>
                         <td><c:out value="${book.quantity}" /></td>
                         <td>
-                            <a href="book?action=edit&bookID=${book.bookID}&name=${book.name}&totalPage=${book.totalPage}&type=${book.type}&quantity=${book.quantity}">
+                            <a href="book?action=edit&bookID=${book.bookID}&name=${book.name}&totalPage=${book.totalPage}&type=${book.type}&quantity=${book.quantity}" class="btn btn-primary" role="button" onclick="editBook(${book.bookID}, '${book.name}', ${book.totalPage}, '${book.type}', ${book.quantity})">
                                 Edit
                             </a>
-                            <a href="#" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
+                            <a href="#" class="btn btn-danger delete-btn" role="button" data-id="${book.bookID}" data-toggle="modal" data-target="#deleteModal">
+                                Delete
+                            </a>
                         </td>
+
                     </tr>
                 </c:forEach>
             </table>

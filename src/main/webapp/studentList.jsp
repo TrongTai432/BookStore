@@ -54,9 +54,9 @@
                         </td>
 
                         <td>
-                            <a href="student?action=edit&studentID=${student.studentID}&name=${student.name}&age=${student.age}&gender=${student.gender}">Edit</a>
+                            <a href="student?action=edit&studentID=${student.studentID}&name=${student.name}&age=${student.age}&gender=${student.gender}" class="btn btn-primary" role="button">Edit</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#" data-id="${student.studentID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn">Delete</a>
+                            <a href="#" data-id="${student.studentID}" data-toggle="modal" data-target="#deleteModal" class="delete-btn btn btn-danger"  role="button">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

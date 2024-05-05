@@ -34,6 +34,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public boolean isStudentBorrowed(int studentID) throws SQLException {
+        return this.studentDAO.isStudentBorrowed(studentID);
+    }
+
+    @Override
     public StudentDTO getStudentById(int studentid) throws SQLException {
         return this.studentDAO.getStudentById(studentid);
     }

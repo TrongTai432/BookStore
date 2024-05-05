@@ -1,5 +1,6 @@
 
 <%@ page import="com.store.common.DBConnect" %>
+<%@ page import="java.sql.ResultSet" %>
 
 <html>
 <head>
@@ -45,7 +46,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    <table class="table">
+    <table id="borrowTable" class="table">
         <thead>
         <tr>
             <th>BookID</th>
@@ -76,9 +77,7 @@
             }
         %>
         </tbody>
-
     </table>
-
 </div>
 </body>
 </html>

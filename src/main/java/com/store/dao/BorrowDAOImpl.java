@@ -53,15 +53,14 @@ public class BorrowDAOImpl implements BorrowDAO {
     }
 
     public boolean addNewBorrow(BorrowDTO newBorrow) throws SQLException {
-        String sqlInsert = "INSERT INTO borrows (BorrowID, StudentID, BookID, Quantity, BorrowDate) VALUES (?, ?, ?, ?, ?)";
-        connect();
-        PreparedStatement statement = jdbcConnection.prepareStatement(sqlInsert);
+        String sqlInsert = "INSERT INTO borrows (StudentID, BookID, Quantity, BorrowDate) VALUES ( ?, ?, ?, ?)";
+        Connection conn = DBConnect.getConnection();
+        PreparedStatement statement = conn.prepareStatement(sqlInsert);
 
-        statement.setInt(1, newBorrow.getBorrowID());
-        statement.setInt(2, newBorrow.getStudentID());
-        statement.setInt(3, newBorrow.getBookID());
-        statement.setInt(4, newBorrow.getQuantity());
-        statement.setDate(5, newBorrow.getBorrowDate());
+        statement.setInt(1, newBorrow.getStudentID());
+        statement.setInt(2, newBorrow.getBookID());
+        statement.setInt(3, newBorrow.getQuantity());
+        statement.setDate(4, newBorrow.getBorrowDate());
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
         disconnect();
@@ -72,8 +71,8 @@ public class BorrowDAOImpl implements BorrowDAO {
     @Override
     public boolean updateBorrow(BorrowDTO borrow) throws SQLException {
         String sql = "UPDATE borrows SET  StudentID = ?, BookID = ?,  Quantity=?, BorrowDate =?  WHERE BorrowID = ?";
-        connect();
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        Connection conn = DBConnect.getConnection();
+        PreparedStatement statement = conn.prepareStatement(sql);
 
         statement.setInt(1, borrow.getStudentID());
         statement.setInt(2, borrow.getBookID());
@@ -86,22 +85,34 @@ public class BorrowDAOImpl implements BorrowDAO {
     }
 
     @Override
-    public boolean deleteBorrow(BorrowDTO borrow) throws SQLException {
+    public boolean deleteBorrow(int borrowID) throws SQLException {
         String sql = "DELETE FROM borrows where BorrowID = ?";
-        connect();
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, borrow.getBorrowID());
-        boolean rowDeleted = statement.executeUpdate() > 0;
-        statement.close();
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean rowDeleted = false;
+        try {
+            conn = DBConnect.getConnection();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, borrowID);
+            rowDeleted = statement.executeUpdate() > 0;
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
         return rowDeleted;
     }
+
 
     @Override
     public BorrowDTO getBorrowById(int borrowID) throws SQLException {
         BorrowDTO borrow= null;
         String sql = "SELECT * FROM borrows WHERE BorrowID = ?";
-        connect();
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        Connection conn = DBConnect.getConnection();
+        PreparedStatement statement = conn.prepareStatement(sql);
         statement.setInt(1, borrowID);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {

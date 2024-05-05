@@ -10,5 +10,6 @@ public interface BookDAO {
     boolean addNewBook(BookDTO newBook) throws SQLException;
     boolean updateBook(BookDTO book) throws SQLException;
     boolean deleteBook(int bookID)throws SQLException;
+    boolean isBookBorrowed(int bookID) throws SQLException;
     BookDTO getBookById(int bookID) throws SQLException;
 }

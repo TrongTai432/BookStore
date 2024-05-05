@@ -85,6 +85,10 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public boolean deleteStudent(int studentID) throws SQLException {
+        if (isStudentBorrowed(studentID)) {
+            return false;
+        }
+
         String sql = "DELETE FROM students WHERE StudentID = ?";
         Connection conn = null;
         PreparedStatement statement = null;
@@ -107,6 +111,23 @@ public class StudentDAOImpl implements StudentDAO {
         return rowDeleted;
     }
 
+
+    public boolean isStudentBorrowed(int studentID) throws SQLException {
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM borrows WHERE StudentID = ?")) {
+            statement.setInt(1, studentID);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return false;
+    }
 
     @Override
     public StudentDTO getStudentById(int studentid) throws SQLException {

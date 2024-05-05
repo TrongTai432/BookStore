@@ -36,6 +36,11 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
+    public boolean isBookBorrowed(int bookID) throws SQLException {
+        return this.bookDAO.isBookBorrowed(bookID);
+    }
+
+    @Override
     public BookDTO getBookById(int bookID) throws SQLException {
         return this.bookDAO.getBookById(bookID);
     }

@@ -1,5 +1,6 @@
 package com.store.controller;
 
+import com.store.common.DBConnect;
 import com.store.dto.BorrowDTO;
 import com.store.service.BorrowService;
 import com.store.service.BorrowServiceImpl;
@@ -34,18 +35,22 @@ public class BorrowController extends HttpServlet {
         try {
             switch (action) {
                 case "new":
-                    showNewBorrowForm(request, response);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("newBorrowForm.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 case "insert":
-                    insertBorrow(request, response);
+                    this.insertBorrow(request, response);
                     break;
                 case "edit":
-                    showEditBorrowForm(request, response);
+                    this.showEditBorrowForm(request, response);
                     break;
                 case "update":
-                    updateBorrow(request, response);
+                    this.updateBorrow(request, response);
                     break;
                 case "delete":
+                    int borrowID = Integer.parseInt(request.getParameter("borrowID"));
+                    borrowService.deleteBorrow(borrowID);
+                    response.sendRedirect("borrow");
                     break;
                 default:
                     listBorrows(request, response);
@@ -63,34 +68,28 @@ public class BorrowController extends HttpServlet {
 
     private void listBorrows(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<BorrowDTO> listBorrow = borrowService.getAllBorrows();
+        List<BorrowDTO> listBorrow = this.borrowService.getAllBorrows();
         request.setAttribute("listBorrow", listBorrow);
         RequestDispatcher dispatcher = request.getRequestDispatcher("borrowList.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void showNewBorrowForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("newBorrowForm.jsp");
-        dispatcher.forward(request, response);
-    }
-
     private void showEditBorrowForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int borrowID = Integer.parseInt(request.getParameter("BorrowID"));
-        BorrowDTO existingBorrow = borrowService.getBorrowById(borrowID);
+        int borrowID = Integer.parseInt(request.getParameter("borrowID"));
+        BorrowDTO existingBorrow = this.borrowService.getBorrowById(borrowID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("editBorrow.jsp");
-        request.setAttribute("BorrowController", existingBorrow);
+        request.setAttribute("borrow", existingBorrow);
         dispatcher.forward(request, response);
     }
 
     private void insertBorrow(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int borrowID = Integer.parseInt(request.getParameter("BorrowID"));
-        int studentID = Integer.parseInt(request.getParameter("StudentID"));
-        int bookID = Integer.parseInt(request.getParameter("BookID"));
-        int quantity = Integer.parseInt(request.getParameter("Quantity"));
+        int studentID = Integer.parseInt(request.getParameter("studentID"));
+        String[] bookIDs = request.getParameterValues("bookID[]");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
         // Parse BorrowDate from request
-        String borrowDateStr = request.getParameter("BorrowDate");
+        String borrowDateStr = request.getParameter("borrowDate");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date borrowDate = null;
         try {
@@ -99,13 +98,17 @@ public class BorrowController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Update booklist quantity
-        updateBookQuantity(bookID, quantity);
 
-        BorrowDTO newBorrow = new BorrowDTO(borrowID,studentID, bookID, quantity, borrowDate);
-        borrowService.addNewBorrow(newBorrow);
-        response.sendRedirect("borrowList.jsp");
+        for (String bookIDStr : bookIDs) {
+            int bookID = Integer.parseInt(bookIDStr);
+            updateBookQuantity(bookID, quantity);
+
+            BorrowDTO newBorrow = new BorrowDTO(studentID, bookID, quantity, borrowDate);
+            this.borrowService.addNewBorrow(newBorrow);
+        }
+        response.sendRedirect("borrow");
     }
+
 
     private void updateBorrow(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
@@ -113,7 +116,6 @@ public class BorrowController extends HttpServlet {
         int studentID = Integer.parseInt(request.getParameter("StudentID"));
         int bookID = Integer.parseInt(request.getParameter("BookID"));
         int quantity = Integer.parseInt(request.getParameter("Quantity"));
-        // Lấy giá trị ngày mượn từ request
         String borrowDateStr = request.getParameter("BorrowDate");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date borrowDate = null;
@@ -126,14 +128,14 @@ public class BorrowController extends HttpServlet {
         updateBookQuantity(bookID, quantity);
         BorrowDTO borrow = new BorrowDTO(borrowID, studentID, bookID, quantity, borrowDate);
         this.borrowService.updateBorrow(borrow);
-        response.sendRedirect("borrowList.jsp");
+        response.sendRedirect("borrow");
     }
 
     private void updateBookQuantity(int bookID, int borrowedQuantity) throws SQLException {
         // Get current quantity of the book
         int currentQuantity = 0;
         String sqlSelect = "SELECT Quantity FROM books WHERE BookID = ?";
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bookstore", "root", "123456");
+        try (Connection conn = DBConnect.getConnection();
              PreparedStatement statement = conn.prepareStatement(sqlSelect)) {
             statement.setInt(1, bookID);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -146,7 +148,7 @@ public class BorrowController extends HttpServlet {
         // Update book quantity
         int updatedQuantity = currentQuantity - borrowedQuantity;
         String sqlUpdate = "UPDATE books SET Quantity = ? WHERE BookID = ?";
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bookstore", "root", "123456");
+        try (Connection conn = DBConnect.getConnection();
              PreparedStatement statement = conn.prepareStatement(sqlUpdate)) {
             statement.setInt(1, updatedQuantity);
             statement.setInt(2, bookID);

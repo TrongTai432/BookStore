@@ -10,5 +10,6 @@ public interface StudentDAO {
     boolean addNewStudent(StudentDTO newStudent) throws SQLException;
     boolean updateStudent(StudentDTO student) throws SQLException;
     boolean deleteStudent(int studentID)throws SQLException;
+    boolean isStudentBorrowed(int studentID) throws SQLException;
     StudentDTO getStudentById(int studentid) throws SQLException;
 }
